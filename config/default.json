@@ -1,0 +1,16 @@
+{
+    "mongodb": {
+      "hostname":"localhost",
+      "username":"root",
+      "password":"admin",
+      "port" : "27017",
+      "dbname": "nodejs-mongo-api",
+      "url": "mongodb://localhost:27017/nodejsMongoDBApi"
+    },
+    "environment": {
+      "local": "localhost:3001"
+    },
+    "static": {
+      "port": 3001
+    }
+  }

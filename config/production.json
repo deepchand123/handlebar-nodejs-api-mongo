@@ -1,0 +1,16 @@
+{
+  "mongodb": {
+    "hostname":"cluster0-qzwy9.mongodb.net",
+    "username":"root",
+    "password":"admin",
+    "port" : "27017",
+    "dbname": "test",
+    "url": "mongodb+srv://root:admin@cluster0-qzwy9.mongodb.net/test?retryWrites=true&w=majority"
+  },
+  "environment": {
+    "local": "localhost:3001"
+  },
+  "static": {
+    "port": 3001
+  }
+}
