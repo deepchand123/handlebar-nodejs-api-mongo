@@ -4,7 +4,7 @@ var cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var hbs = require( 'express-handlebars');
+var exphbs = require( 'express-handlebars');
 
 // JSONWebToken
 const jwt = require('jsonwebtoken');
@@ -26,20 +26,21 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // view engine setup
-app.set('view engine', 'hbs');
-
-app.engine( 'hbs', hbs( {
-  extname: 'hbs',
-  defaultView: 'default',
-  layoutsDir: __dirname + '/views/pages/',
-  partialsDir: __dirname + '/views/partials/'
-}));
+app.engine( 'handlebars',
+  exphbs( {
+    extname: '.hbs',
+    defaultLayout: 'main',
+    layoutsDir: __dirname + '/views/layouts/',
+    partialsDir: __dirname + '/views/partials/'
+  })
+);
+app.set('view engine', 'handlebars');
 
 //index Base url call
 app.get('/', function (req, res) {
   //res.send("Base URL is called");
-  //res.render('home', {layout: 'default', template: 'home-template'});
-  res.render('home', {layout: false});
+  res.render('home');
+  //res.render('home');
 });
 
 app.use('/api', indexRouter);
