@@ -5,12 +5,13 @@
     "password":"admin",
     "port" : "27017",
     "dbname": "nodejs-mongo-api",
-    "url": "mongodb://localhost:27017/nodejsMongoDBApi"
+    "url": "mongodb+srv://root:admin@cluster0-qzwy9.mongodb.net/test?retryWrites=true&w=majority"
   },
   "environment": {
     "local": "localhost:3001"
   },
   "static": {
-    "port": 3001
+    "port": 3001,
+    "baseUrl" : "http://localhost:3001"
   }
 }

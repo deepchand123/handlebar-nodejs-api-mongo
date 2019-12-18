@@ -12,8 +12,9 @@ const jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
 
 var config = require('config');
-//const port = config.get('static.port');
-const port = 3001;
+const port = config.get('static.port');
+const baseUrl = config.get('static.baseUrl'); //store the base URL
+
 var app = express();
 app.use(cors());  //CORS Enable for all route
 
@@ -23,24 +24,44 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+//Set the fublic folder for external resources
 app.use(express.static(path.join(__dirname, 'public')));
 
 // view engine setup
 app.engine( 'handlebars',
-  exphbs( {
+  exphbs({
     extname: '.hbs',
     defaultLayout: 'main',
     layoutsDir: __dirname + '/views/layouts/',
-    partialsDir: __dirname + '/views/partials/'
+    partialsDir: __dirname + '/views/partials/',
+    helpers: {
+      baseUrl: baseUrl  //Send the base URL
+    }
   })
 );
 app.set('view engine', 'handlebars');
 
 //index Base url call
 app.get('/', function (req, res) {
-  //res.send("Base URL is called");
+  //res.send("Login/Base URL is called");
+  res.render('login', { layout: false } );
+});
+
+app.get('/loign', function (req, res) {
+  //res.send("Login/Base URL is called");
+  req.app.locals.baseUrl;
+
+  res.render('login', { layout: false } );
+});
+
+app.get('/register', function (req, res) {
+  //res.send("Register URL is called");
+  res.render('register', { layout: false } );
+});
+
+app.get('/home', function (req, res) {
+  //res.send("Home URL is called");
   res.render('home');
-  //res.render('home');
 });
 
 app.use('/api', indexRouter);
