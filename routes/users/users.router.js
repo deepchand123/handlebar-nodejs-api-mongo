@@ -22,6 +22,6 @@ router.delete('/deleteUser/:id', verifyToken.verifyToken, userController.deleteU
 //login user
 router.post('/login', userController.login);
 //logout user
-router.post('/logout', userController.logout);
+router.post('/logout', verifyToken.verifyToken, userController.logout);
 
 module.exports = router;
