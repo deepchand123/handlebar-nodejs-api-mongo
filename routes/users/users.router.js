@@ -8,8 +8,8 @@ const verifyToken = require('../../services/jsonWebTokenHelper');
 //create user
 router.post('/createUser', userController.createUser);
 //all user list
-router.get('/getUsers', userController.getUsers);
-//router.get('/getUsers', verifyToken.verifyToken, userController.getUsers);
+//router.get('/getUsers', userController.getUsers);
+router.get('/getUsers', verifyToken.verifyToken, userController.getUsers);
 //single user detail
 //router.get('/getUsers/:id', userController.getSingleUser);
 router.get('/getUsers/:id', verifyToken.verifyToken, userController.getSingleUser);
