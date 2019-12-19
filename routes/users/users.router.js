@@ -21,5 +21,7 @@ router.put('/updateUser/:id', verifyToken.verifyToken, userController.updateUser
 router.delete('/deleteUser/:id', verifyToken.verifyToken, userController.deleteUser);
 //login user
 router.post('/login', userController.login);
+//logout user
+router.post('/logout', userController.logout);
 
 module.exports = router;

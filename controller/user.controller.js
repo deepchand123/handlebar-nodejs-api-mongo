@@ -177,11 +177,24 @@ const verifyToken = require('../services/jsonWebTokenHelper');
         });
     }
 
+    let userLogoutFunction = (req, res) => {
+        console.log("call user logout api");
+        var userData = req.body;
+        let payload = { subject : 1234567890 };
+        let token = jwt.sign(payload, 'scretkey', { expiresIn : "0" });
+        res.status(200).send({
+            status: 1,
+            msg: 'User is logout successfully',
+            data: { userData: userData, tiken: token }
+        });
+    }
+
     module.exports = {
         createUser: userCreateFunction,
         getUsers: userListFunction,
         getSingleUser: userDetailFunction,
         deleteUser: userDeleteFunction, 
         updateUser: userUpdateFunction,
-        login: userLoginFunction
+        login: userLoginFunction,
+        logout: userLogoutFunction
     }
