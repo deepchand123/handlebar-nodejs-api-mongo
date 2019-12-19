@@ -150,7 +150,8 @@ const verifyToken = require('../services/jsonWebTokenHelper');
                 if(!result){
                     res.status(200).send({
                         status: 403,
-                        msg: 'Invalid Email',
+                        field: 'email',
+                        msg: 'This mail id is not exist',
                         data: {}
                     });
                 } else {                    
@@ -158,6 +159,7 @@ const verifyToken = require('../services/jsonWebTokenHelper');
                     if(result.password !== userData.password){
                         res.status(200).send({
                             status: 403,
+                            field: 'password',
                             msg: 'Invalid Password',
                             data: {}
                         });
