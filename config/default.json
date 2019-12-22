@@ -1,11 +1,11 @@
 {
     "mongodb": {
-      "hostname":"localhost",
-      "username":"root",
-      "password":"admin",
+      "hostname":"cluster0-nghgq.mongodb.net",
+      "username":"deep",
+      "password":"deep123",
       "port" : "27017",
       "dbname": "nodejs-mongo-api",
-      "url": "mongodb+srv://root:admin@cluster0-qzwy9.mongodb.net/test?retryWrites=true&w=majority"
+      "url": "mongodb+srv://deep:deep123@cluster0-nghgq.mongodb.net/nodejs-mongo-api?retryWrites=true&w=majority"
     },
     "environment": {
       "local": "localhost:3001"
