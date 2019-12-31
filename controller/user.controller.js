@@ -1,9 +1,11 @@
 // Mongo DB
 const db = require('./../services/db.service.js'),
     User = require('./../model/userModel.js');
+//crypt 
+const bcypt = require('bcryptjs');
 //JSONWebToken
 const jwt = require('jsonwebtoken');
-//verify tiken
+//verify jsonwebtoken
 const verifyToken = require('../services/jsonWebTokenHelper');
 
     let userCreateFunction = (req, res) => {
