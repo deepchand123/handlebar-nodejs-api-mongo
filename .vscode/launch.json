@@ -7,14 +7,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Nodejs Program Debug",
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "program": "${workspaceFolder}\\app.js",
             "env": {
-                "NODE_ENV": "development"
-            },
-            "program": "${workspaceFolder}/app.js"
+                "enviornment": "development"
+            }
         }
     ]
 }

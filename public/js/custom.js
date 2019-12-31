@@ -79,7 +79,17 @@ $(document).ready(function () {
                     if (data == 'Unauthorized Request') {
                         location.href = baseUrl;
                     } else {
-                        console.log(data);
+                        console.log({ "data": data.data });
+                        $('#usersList').DataTable({
+                            "data": data.data,
+                            "columns": [
+                                { "data": "_id" },
+                                { "data": "name" },
+                                { "data": "email" },
+                                { "data": "create_date" },
+                                { "data": "<buton>Detail</button>" },
+                            ]  
+                        });
                     }
                 },
                 error: function (error) {
