@@ -33,8 +33,8 @@
                         <div class="login-form">
                             <form id="registerForm" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label>Username</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
+                                    <label>Name</label>
+                                    <input class="au-input au-input--full" type="text" name="name" placeholder="Name">
                                 </div>
                                 <div class="form-group">
                                     <label>Email Address</label>
@@ -44,11 +44,11 @@
                                     <label>Password</label>
                                     <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
                                 </div>
-                                <div class="login-checkbox">
+                                {{!-- <div class="login-checkbox">
                                     <label>
                                         <input type="checkbox" name="aggree">Agree the terms and policy
                                     </label>
-                                </div>
+                                </div> --}}
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">register</button>
                                 {{!-- <div class="social-login-content">
                                     <div class="social-button">
@@ -60,7 +60,7 @@
                             <div class="register-link">
                                 <p>
                                     Already have account?
-                                    <a href="#">Sign In</a>
+                                    <a href="/">Sign In</a>
                                 </p>
                             </div>
                         </div>
@@ -72,7 +72,64 @@
     </div>
 
     {{> script }}
-
+    <script>
+    //Login Page
+    $("#registerForm").on("submit", function (e) {
+        e.preventDefault();
+        let name = $("input[name='name']").val();
+        let email = $("input[name='email']").val();
+        let password = $("input[name='password']").val();
+        //validation
+        let error = [];
+        $("#registerForm input").each(function () {
+            //console.log(this);
+            if (this.type == '' || this.type == 'text' || this.type == 'email' || this.type == 'password') {
+                let fieldName = this.name;
+                let fieldPlaceholder = this.placeholder;
+                let fieldValue = this.value;
+                $(`.${fieldName}.text-danger`).remove();
+                if (this.value == '') {
+                    let errorInfo = {};
+                    let message = fieldPlaceholder + ' is required';
+                    errorInfo[`${this.name}`] = { error: true, msg: message, value: fieldValue };
+                    error.push(errorInfo);
+                    $(`input[name='${fieldName}']`).after(`<span class='${fieldName} text-danger'>${message}</span>`);
+                }
+                else {
+                    $(`.${fieldName}.text-danger`).remove();
+                }
+            }
+        });
+        //console.log(error); return false;
+        //Call the Node.js API
+        if (error.length == 0) {
+            $.ajax({
+                url: baseUrl + '/api/users/createUser',
+                type: "POST",
+                data: {
+                    'name': name,
+                    'email': email,
+                    'password': password
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.error) {
+                        let field = data.field;
+                        $(`.${field}.text-danger`).remove();
+                        $(`input[name='${field}']`).after(`<span class='${field} text-danger'>${msg}</span>`);
+                    }
+                    else if (data.status == 1) {
+                        alert(data.msg);
+                        location.href = baseUrl;    //redirect to login page
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+    </script>
 </body>
 
 </html>

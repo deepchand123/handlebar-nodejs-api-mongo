@@ -2,201 +2,225 @@
 const db = require('./../services/db.service.js'),
     User = require('./../model/userModel.js');
 //crypt 
-const bcypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 //JSONWebToken
 const jwt = require('jsonwebtoken');
+//localstorage
+// if (typeof localStorage === "undefined" || localStorage === null) {
+//     var LocalStorage = require('node-localstorage').LocalStorage;
+//     localStorage = new LocalStorage('./scratch');
+// }
 //verify jsonwebtoken
 const verifyToken = require('../services/jsonWebTokenHelper');
 
-    let userCreateFunction = (req, res) => {
-        console.log("call create user api");
-        let userCreateData = req.body;
-        console.log(userCreateData);
-        //check already exist mail id
-        User.findOne({email: userCreateData.email}, (error, result) => {                    
-            if(error){
-                res.status(400).send({
-                    status: 0,
-                    msg: error,
+let userCreateFunction = (req, res) => {
+    console.log("call create user api");
+    const encryptPassword = bcypt.hashSync(req.body.password, saltRounds);
+    let userCreateData = {
+        name: req.body.name,
+        email: req.body.email,
+        password: encryptPassword
+    };
+    //console.log(userCreateData);
+    //check already exist mail id
+    User.findOne({ email: userCreateData.email }, (error, result) => {
+        if (error) {
+            res.status(400).send({
+                status: 0,
+                error: error,
+                msg: "Error on find user mail id",
+                data: []
+            });
+        }
+        else {
+            if (result) {
+                res.status(200).send({
+                    status: 1,
+                    error: null,
+                    msg: 'Email Id is already Exist',
                     data: []
                 });
-            }  
+            }
             else {
-                console.log(result);                
-                if(result){
-                    console.log("If Condition");
-                    res.status(200).send({
-                        status: 1,
-                        msg: 'Email Id is already Exist',
-                        data: []
-                    });
-                } 
-                else {
-                    //Create new record
-                    let user = new User(userCreateData);                
-                    user.save((err, result) => {
-                        if(err){
-                            res.status(400).send({
-                                status: 0,
-                                msg: err,
-                                data: []
-                            });
-                        } 
-                        else {
-                            let payload = {subject : result._id};
-                            let token = jwt.sign(payload, 'scretkey', { expiresIn : "1h" });
-                            res.status(200).send({
-                                status: 1,
-                                msg: 'User created successfully',
-                                data: [{
-                                    '_id': result._id,
-                                    token: token
-                                }]
-                            });
-                        }
-                    }); 
-                }                              
-            }          
-        });
-                
-    }
-
-    let userListFunction = (req, res) => {
-        console.log("call user list api");
-        User.find((err, result) => {
-            if (err){
-                res.status(400).send({
-                    status: 0,
-                    msg: err,
-                    data: []
-                });
-            } else{
-                res.status(200).send({
-                    status: 1,
-                    msg: 'Get all user lists',
-                    data: result
-                });
-            }
-        }).limit(10);
-    };
-
-    let userDetailFunction = (req, res) => {
-        console.log("call user detail api", req.params.id);
-        User.findById('5d7d1f7a3f6416223bf94ff7', (err, result) => {
-            if (err){
-                res.status(400).send({
-                    status: 0,
-                    msg: err,
-                    data: []
-                });
-            } else {
-                res.status(200).send({
-                    status: 1,
-                    msg: 'Get user detail',
-                    data: result
-                });
-            }
-        });
-    };
-
-    let userUpdateFunction = (req, res) => {
-        console.log("call user update api", req.params.id);
-        User.findByIdAndUpdate('5d7d1f7a3f6416223bf94ff7', {$set: req.body}, (err, result) => {
-            if (err){
-                res.status(400).send({
-                    status: 0,
-                    msg: err,
-                    data: []
-                });
-            } else {
-                res.status(200).send({
-                    status: 1,
-                    msg: 'User detail is updated',
-                    data: result
-                });
-            }
-        });
-    };
-
-    let userDeleteFunction = (req, res) => {
-        console.log("call user delete api", req.params.id);
-        User.findByIdAndRemove('5d7d1f7a3f6416223bf94ff7', (err, result) => {
-            if (err){
-                res.status(400).send({
-                    status: 0,
-                    msg: err,
-                    data: []
-                });
-            } else {
-                res.status(200).send({
-                    status: 1,
-                    msg: 'User is deleted',
-                    data: result
-                });
-            }
-        });
-    };
-
-    let userLoginFunction = (req, res) => {
-        console.log("call user login api");
-        var userData = req.body;
-        //console.log(userData);
-        User.findOne({email: userData.email}, (err, result) => {            
-            if (err){
-                res.status(400).send({
-                    status: 0,
-                    msg: err,
-                    data: {}
-                });
-            } else {
-                if(!result){
-                    res.status(200).send({
-                        status: 403,
-                        field: 'email',
-                        msg: 'This mail id is not exist',
-                        data: {}
-                    });
-                } else {                    
-                    //console.log(result);
-                    if(result.password !== userData.password){
-                        res.status(200).send({
-                            status: 403,
-                            field: 'password',
-                            msg: 'Invalid Password',
-                            data: {}
-                        });
-                    } else {
-                        let payload = {subject : result._id};
-                        let token = jwt.sign(payload, 'scretkey', { expiresIn : "1h" });
-                        res.status(200).send({
-                            status: 1,
-                            msg: 'User email and password is matched successfully',
-                            data: {token: token}
+                //Create new record
+                let user = new User(userCreateData);
+                user.save((err, result) => {
+                    if (err) {
+                        res.status(400).send({
+                            status: 0,
+                            error: err,
+                            msg: "Error on user create",
+                            data: []
                         });
                     }
-                } 
+                    else {
+                        let payload = { subject: result._id };
+                        res.status(200).send({
+                            status: 1,
+                            error: null,
+                            msg: 'User created successfully',
+                            data: [userCreateData]
+                        });
+                    }
+                });
             }
-        });
-    }
+        }
+    });
 
-    let userLogoutFunction = (req, res) => {
-        console.log("call user logout api");
-        var userData = req.body;
-        let payload = { subject : 1234567890 };
-        let token = jwt.sign(payload, 'scretkey', { expiresIn : "0" });
-        res.status(200).send({
-            status: 1,
-            msg: 'User is logout successfully',
-            data: { userData: userData, tiken: token }
-        });
-    }
+}
 
-    module.exports = {
-        createUser: userCreateFunction,
-        getUsers: userListFunction,
-        getSingleUser: userDetailFunction,
-        deleteUser: userDeleteFunction, 
-        updateUser: userUpdateFunction,
-        login: userLoginFunction,
-        logout: userLogoutFunction
-    }
+let userLoginFunction = (req, res) => {
+    console.log("call user login api");
+    var userData = {
+        email: req.body.email,
+        password: req.body.password
+    };
+    //console.log(userData);
+    User.findOne({ email: userData.email }, (err, result) => {
+        if (err) {
+            res.status(400).send({
+                status: 0,
+                error: err,
+                msg: "Error on email check",
+                data: {}
+            });
+        } else {
+            if (result === null) {
+                res.status(200).send({
+                    status: 1,
+                    error: 'validation',
+                    field: 'email',
+                    msg: 'This mail id is not exist',
+                    data: {}
+                });
+            }
+            else {
+                //console.log(result);
+                const getDBPassword = result.password ? result.password : '';
+                let comparePass = bcrypt.compareSync(userData.password, getDBPassword);
+                if (comparePass === false) {
+                    res.status(200).send({
+                        status: 1,
+                        error: 'validation',
+                        field: 'password',
+                        msg: 'Invalid Password',
+                        data: {}
+                    });
+                } else {
+                    //start - create and set the token 
+                    const getUserId = result.id;
+                    const getUserName = result.name;
+                    let token = jwt.sign({ userId: getUserId }, 'loginToken');
+                    // localStorage.setItem('userToken', token);
+                    // localStorage.setItem('userId', getUserId);
+                    //End -- 
+                    res.status(200).send({
+                        status: 1,
+                        error: null,
+                        msg: 'User login successfully',
+                        data: { userToken: token, userId: getUserId, userName: getUserName }
+                    });
+                }
+            }
+        }
+    });
+}
+
+let userLogoutFunction = (req, res) => {
+    console.log("call user logout api");
+    var userData = req.body;
+    let payload = { subject: 1234567890 };
+    let token = jwt.sign(payload, 'scretkey', { expiresIn: "0" });
+    res.status(200).send({
+        status: 1,
+        msg: 'User is logout successfully',
+        data: { userData: userData, tiken: token }
+    });
+}
+
+let userListFunction = (req, res) => {
+    console.log("call user list api");
+    User.find((err, result) => {
+        if (err) {
+            res.status(400).send({
+                status: 0,
+                msg: err,
+                data: []
+            });
+        } else {
+            res.status(200).send({
+                status: 1,
+                msg: 'Get all user lists',
+                data: result
+            });
+        }
+    }).limit(10);
+};
+
+let userDetailFunction = (req, res) => {
+    console.log("call user detail api", req.params.id);
+    User.findById('5d7d1f7a3f6416223bf94ff7', (err, result) => {
+        if (err) {
+            res.status(400).send({
+                status: 0,
+                msg: err,
+                data: []
+            });
+        } else {
+            res.status(200).send({
+                status: 1,
+                msg: 'Get user detail',
+                data: result
+            });
+        }
+    });
+};
+
+let userUpdateFunction = (req, res) => {
+    console.log("call user update api", req.params.id);
+    User.findByIdAndUpdate('5d7d1f7a3f6416223bf94ff7', { $set: req.body }, (err, result) => {
+        if (err) {
+            res.status(400).send({
+                status: 0,
+                msg: err,
+                data: []
+            });
+        } else {
+            res.status(200).send({
+                status: 1,
+                msg: 'User detail is updated',
+                data: result
+            });
+        }
+    });
+};
+
+let userDeleteFunction = (req, res) => {
+    console.log("call user delete api", req.params.id);
+    User.findByIdAndRemove('5d7d1f7a3f6416223bf94ff7', (err, result) => {
+        if (err) {
+            res.status(400).send({
+                status: 0,
+                msg: err,
+                data: []
+            });
+        } else {
+            res.status(200).send({
+                status: 1,
+                msg: 'User is deleted',
+                data: result
+            });
+        }
+    });
+};
+
+module.exports = {
+    createUser: userCreateFunction,
+    getUsers: userListFunction,
+    getSingleUser: userDetailFunction,
+    deleteUser: userDeleteFunction,
+    updateUser: userUpdateFunction,
+    login: userLoginFunction,
+    logout: userLogoutFunction
+}

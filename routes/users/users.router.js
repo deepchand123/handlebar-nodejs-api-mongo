@@ -7,6 +7,10 @@ const verifyToken = require('../../services/jsonWebTokenHelper');
 
 //create user
 router.post('/createUser', userController.createUser);
+//login user
+router.post('/login', userController.login);
+//logout user
+router.post('/logout', verifyToken.verifyToken, userController.logout);
 //all user list
 //router.get('/getUsers', userController.getUsers);
 router.get('/getUsers', verifyToken.verifyToken, userController.getUsers);
@@ -19,9 +23,5 @@ router.put('/updateUser/:id', verifyToken.verifyToken, userController.updateUser
 //delete user
 //router.delete('/deleteUser/:id', userController.deleteUser);
 router.delete('/deleteUser/:id', verifyToken.verifyToken, userController.deleteUser);
-//login user
-router.post('/login', userController.login);
-//logout user
-router.post('/logout', verifyToken.verifyToken, userController.logout);
 
 module.exports = router;
