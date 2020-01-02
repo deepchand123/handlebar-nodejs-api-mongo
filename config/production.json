@@ -1,11 +1,11 @@
 {
   "mongodb": {
-    "hostname":"cluster0-nghgq.mongodb.net",
+    "hostname":"cluster0-qzwy9.mongodb.net",
     "username":"deep",
     "password":"deep123",
     "port" : "27017",
     "dbname": "nodejs-mongo-api",
-    "url": "mongodb+srv://deep:deep123@cluster0-nghgq.mongodb.net/nodejs-mongo-api?retryWrites=true&w=majority"
+    "url": "mongodb+srv://deep:deep123@cluster0-qzwy9.mongodb.net/nodejs-mongo-api?retryWrites=true&w=majority"
   },
   "environment": {
     "local": "http://localhost"
