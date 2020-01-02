@@ -43,24 +43,18 @@ app.set('view engine', 'handlebars');
 
 //index Base url call
 app.get('/', function (req, res) {
-  //res.send("Login/Base URL is called");
   res.render('login', { layout: false } );
 });
 
-app.get('/loign', function (req, res) {
-  //res.send("Login/Base URL is called");
-  req.app.locals.baseUrl;
-
+app.get('/login', function (req, res) {
   res.render('login', { layout: false } );
 });
 
 app.get('/register', function (req, res) {
-  //res.send("Register URL is called");
   res.render('register', { layout: false } );
 });
 
 app.get('/home', function (req, res) {
-  //res.send("Home URL is called");
   res.render('home');
 });
 

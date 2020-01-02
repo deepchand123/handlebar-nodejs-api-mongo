@@ -6,11 +6,7 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 //JSONWebToken
 const jwt = require('jsonwebtoken');
-//localstorage
-// if (typeof localStorage === "undefined" || localStorage === null) {
-//     var LocalStorage = require('node-localstorage').LocalStorage;
-//     localStorage = new LocalStorage('./scratch');
-// }
+
 //verify jsonwebtoken
 const verifyToken = require('../services/jsonWebTokenHelper');
 

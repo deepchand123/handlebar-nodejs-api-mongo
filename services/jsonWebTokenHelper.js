@@ -7,13 +7,13 @@ let jsonWebTokenVerify = function(req, res, next){
     //console.log(req.headers);
     const bearerHeader = req.headers.authorization;    
     if(typeof bearerHeader!=='undefined'){
-        const bearer = bearerHeader.split(' ');        
+        const bearer = bearerHeader.split(' ');    
         var token = bearer[1];
         //console.log(token);
         if(token === 'null'){            
             return res.status(401).send('Unauthorized Request');
         } else {            
-            let payload = jwt.verify(token, 'scretkey');
+            let payload = jwt.verify(token, 'userToken');
             //console.log(payload);
             if(!payload){
                 return res.status(401).send('Unauthorized Request');

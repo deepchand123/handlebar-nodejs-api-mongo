@@ -564,3 +564,24 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function (){
+        let token = localStorage.getItem('userToken');
+        if(token){
+            $.ajax({
+            url: baseUrl + '/api/users/getUsers',
+            type: "GET",
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        }
+    });
+</script>
