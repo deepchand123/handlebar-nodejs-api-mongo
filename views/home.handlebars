@@ -566,22 +566,29 @@
 </div>
 <script>
     $(document).ready(function (){
-        let token = localStorage.getItem('userToken');
+        let token = localStorage.getItem('payload');
         if(token){
             $.ajax({
-            url: baseUrl + '/api/users/getUsers',
-            type: "GET",
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+                url: baseUrl + '/api/users/getUsers',
+                type: "GET",
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                beforeSend: function(){
+                    jQuery("#loader").show();   //Shown the spinner
+                },
+                success: function (data) {
+                    console.log(data);
+                    jQuery("#loader").hide();   //Hide the spinner
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        } else{
+            alert('Unauthorized Request');
+            location.href = baseUrl;
         }
     });
 </script>

@@ -13,5 +13,10 @@
   "static": {
     "port": 3001,
     "baseUrl" : "http://localhost:3001"
+  },
+  "constants": {
+    "jsonwebtoken" : {
+      "screat": "l8fkkj7d6jgt*6$#$%%^^hhghn"
+    }
   }
 }

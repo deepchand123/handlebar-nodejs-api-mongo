@@ -124,9 +124,7 @@
                         } 
                         else {
                             //alert(msg);
-                            localStorage.setItem('userToken', data.data.userToken);
-                            localStorage.setItem('userId', data.data.userId);
-                            localStorage.setItem('userName', data.data.userName);
+                            localStorage.setItem('payload', data.data.payload);
                             location.href = baseUrl + '/home';    //redirect to home page
                         }
                     }

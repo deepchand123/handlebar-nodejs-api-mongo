@@ -1,3 +1,6 @@
+//config
+const config = require('config');
+
 // Mongo DB
 const db = require('./../services/db.service.js'),
     User = require('./../model/userModel.js');
@@ -115,7 +118,17 @@ let userLoginFunction = (req, res) => {
                     //start - create and set the token 
                     const getUserId = result.id;
                     const getUserName = result.name;
-                    let token = jwt.sign({ userId: getUserId }, 'loginToken');
+                    const getUserEmail = result.email;
+                    const getUseRole = 1;
+                    let token = jwt.sign(
+                        {
+                            userId: getUserId,
+                            userName: getUserName,
+                            userEmail: getUserEmail,
+                            userRole: getUseRole
+                        }, 
+                        config.get('constants.jsonwebtoken.screat'));
+
                     // localStorage.setItem('userToken', token);
                     // localStorage.setItem('userId', getUserId);
                     //End -- 
@@ -123,7 +136,9 @@ let userLoginFunction = (req, res) => {
                         status: 1,
                         error: null,
                         msg: 'User login successfully',
-                        data: { userToken: token, userId: getUserId, userName: getUserName }
+                        data: { 
+                            payload: token
+                        }
                     });
                 }
             }
@@ -134,12 +149,10 @@ let userLoginFunction = (req, res) => {
 let userLogoutFunction = (req, res) => {
     console.log("call user logout api");
     var userData = req.body;
-    let payload = { subject: 1234567890 };
-    let token = jwt.sign(payload, 'scretkey', { expiresIn: "0" });
     res.status(200).send({
         status: 1,
         msg: 'User is logout successfully',
-        data: { userData: userData, tiken: token }
+        data: { status: 1, error: null,  msg: "User logout successfully", data: {} }
     });
 }
 

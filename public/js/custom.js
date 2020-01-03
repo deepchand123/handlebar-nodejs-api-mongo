@@ -3,8 +3,9 @@ $(document).ready(function () {
     $("#logout").on("click", function (e) {
         e.preventDefault();
         //alert("Logout Click"); return false;
-        let token = localStorage.getItem("token"); //Get the token value from local storeage
+        let token = localStorage.getItem("payload"); //Get the token value from local storeage
         if (token == null) {
+            console.log("Token is null");
             location.href = baseUrl;
         }
         else {
@@ -18,7 +19,7 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data);
                     if(data.status == 1){
-                        localStorage.removeItem("token");   //Remove the token from local storage
+                        localStorage.removeItem("payload");   //Remove the token from local storage
                         location.href = baseUrl;    //Redirect to login page
                     }
                 },
