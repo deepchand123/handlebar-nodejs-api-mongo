@@ -10,6 +10,9 @@ const jwt = require('jsonwebtoken');
 //verify jsonwebtoken
 const verifyToken = require('../services/jsonWebTokenHelper');
 
+//Validation
+const { validationResult } = require('express-validator');
+
 let userCreateFunction = (req, res) => {
     console.log("call create user api");
     const encryptPassword = bcypt.hashSync(req.body.password, saltRounds);
@@ -67,6 +70,11 @@ let userCreateFunction = (req, res) => {
 }
 
 let userLoginFunction = (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     console.log("call user login api");
     var userData = {
         email: req.body.email,
@@ -218,5 +226,8 @@ module.exports = {
     deleteUser: userDeleteFunction,
     updateUser: userUpdateFunction,
     login: userLoginFunction,
-    logout: userLogoutFunction
+    logout: userLogoutFunction,
+    //loginValidation: loginValidation,
+    //loginValidationFunction: loginValidationFunction
+
 }

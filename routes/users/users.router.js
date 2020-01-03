@@ -8,8 +8,13 @@ const verifyToken = require('../../services/jsonWebTokenHelper');
 //create user
 router.post('/createUser', userController.createUser);
 
+//Validation
+const { check, validationResult } = require('express-validator');
+//custom validation
+const checkValidation = require('../../services/validations');
+
 //login user
-router.post('/login', userController.login);
+router.post('/login', checkValidation.loginValidation, userController.login);
 //logout user
 router.post('/logout', verifyToken.verifyToken, userController.logout);
 //all user list
