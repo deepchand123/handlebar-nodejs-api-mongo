@@ -9,7 +9,7 @@ let jsonWebTokenVerify = function(req, res, next){
     //console.log(req.headers);
     const bearerHeader = req.headers.authorization;    
     if(typeof bearerHeader!=='undefined') {
-        const bearer = bearerHeader.split('Bearer ');    
+        const bearer = bearerHeader.split(' ');    
         var token = bearer[1];
         //console.log(token);
         if(token === 'null'){
