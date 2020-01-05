@@ -566,7 +566,7 @@
 </div>
 <script>
     $(document).ready(function (){
-        let token = localStorage.getItem('payload');
+        let token = localStorage.getItem('token');
         if(token){
             $.ajax({
                 url: baseUrl + '/api/users/getUsers',

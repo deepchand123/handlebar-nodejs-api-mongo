@@ -57,7 +57,6 @@ let userCreateFunction = (req, res) => {
                         });
                     }
                     else {
-                        let payload = { subject: result._id };
                         res.status(200).send({
                             status: 1,
                             error: null,
@@ -115,7 +114,6 @@ let userLoginFunction = (req, res) => {
                         data: {}
                     });
                 } else {
-                    //start - create and set the token 
                     const getUserId = result.id;
                     const getUserName = result.name;
                     const getUserEmail = result.email;
@@ -129,15 +127,12 @@ let userLoginFunction = (req, res) => {
                         }, 
                         config.get('constants.jsonwebtoken.screat'));
 
-                    // localStorage.setItem('userToken', token);
-                    // localStorage.setItem('userId', getUserId);
-                    //End -- 
                     res.status(200).send({
                         status: 1,
                         error: null,
                         msg: 'User login successfully',
                         data: { 
-                            payload: token
+                            token: token
                         }
                     });
                 }
