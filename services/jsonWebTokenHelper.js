@@ -15,9 +15,18 @@ let jsonWebTokenVerify = function(req, res, next){
         if(token === 'null'){
             return res.status(401).send('Unauthorized Request');
         }
-        else { 
+        else {
             try {
-                let payload = jwt.verify(token, config.get('constants.jsonwebtoken.screat'));
+                let payload = jwt.verify(token, 
+                    config.get('constants.jsonwebtoken.screat'),
+                    {
+                        algorithm: config.get('constants.jsonwebtoken.algorithm'),
+                        expiresIn: config.get('constants.jsonwebtoken.expiresIn'),
+                        audience: config.get('constants.jsonwebtoken.audience'),
+                        issuer: config.get('constants.jsonwebtoken.issuer'),
+                        subject: config.get('constants.jsonwebtoken.subject'),
+                    }
+                );
             }  
             catch(e){
                 //console.log(e);
@@ -25,7 +34,6 @@ let jsonWebTokenVerify = function(req, res, next){
                     return res.status(401).send('Unauthorized Request'); 
                 }  
             }
-            //req.userId = payload.subject;
             next();
         }
     } 

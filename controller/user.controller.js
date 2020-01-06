@@ -124,8 +124,15 @@ let userLoginFunction = (req, res) => {
                             userName: getUserName,
                             userEmail: getUserEmail,
                             userRole: getUseRole
-                        }, 
-                        config.get('constants.jsonwebtoken.screat'));
+                        },
+                        config.get('constants.jsonwebtoken.screat'),
+                        {
+                            algorithm: config.get('constants.jsonwebtoken.algorithm'),
+                            expiresIn: config.get('constants.jsonwebtoken.expiresIn'),
+                            audience: config.get('constants.jsonwebtoken.audience'),
+                            issuer: config.get('constants.jsonwebtoken.issuer'),
+                            subject: config.get('constants.jsonwebtoken.subject'),
+                        });
 
                     res.status(200).send({
                         status: 1,

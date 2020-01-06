@@ -8,7 +8,7 @@
     "url": "mongodb+srv://deep:deep123@cluster0-qzwy9.mongodb.net/nodejs-mongo-api?retryWrites=true&w=majority"
   },
   "environment": {
-    "local": "http://localhost"
+    "local": "localhost:3001"
   },
   "static": {
     "port": 3001,
@@ -16,7 +16,12 @@
   },
   "constants": {
     "jsonwebtoken" : {
-      "screat": "l8fkkj7d6jgt*6$#$%%^^hhghn"
+      "screat": "l8fkkj7d6jgt*6$#$%%^^hhghn",
+      "algorithm": "HS256",
+      "expiresIn": "1d",
+      "audience": "",
+      "issuer": "!612A94@9p",
+      "subject": ""
     }
   }
 }

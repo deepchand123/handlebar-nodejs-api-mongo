@@ -16,7 +16,12 @@
   },
   "constants": {
     "jsonwebtoken" : {
-      "screat": "l8fkkj7d6jgt*6$#$%%^^hhghn"
+      "screat": "l8fkkj7d6jgt*6$#$%%^^hhghn",
+      "algorithm": "HS256",
+      "expiresIn": "1d",
+      "audience": "",
+      "issuer": "!612A94@9p",
+      "subject": ""
     }
   }
 }
